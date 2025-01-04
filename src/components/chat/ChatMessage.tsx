@@ -2,19 +2,22 @@ import React from 'react'
 import './ChatMessage.scss'
 import { Avatar } from '@mui/material'
 import { Timestamp } from 'firebase/firestore'
-import { InitialUserState } from '../../Type'
-
 
 interface Props {
   timestamp: Timestamp;
   message: string;
-  user: InitialUserState;
+  user: {
+    uid: string;
+    photo: string;
+    email: string;
+    displayName: string;
+  };
 };
 
 
 const ChatMessage = (props: Props) => {
 
-  const {message,timestamp,user} = props;
+  const { message,timestamp,user } = props;
   return (
     <div className="message">
 

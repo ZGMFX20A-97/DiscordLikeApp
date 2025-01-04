@@ -1,14 +1,15 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.scss";
-import App from "./App";
+import App from "./App.tsx";
 import { Provider } from "react-redux";
 import { store } from "./app/store.ts";
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
+const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
 root.render(
 	<React.StrictMode>
-		<Provider store={store}>
+		{/* Providerを使ってアプリ全体でstoreが使える状態にする */}
+		<Provider store={ store }>
 			<App />
 		</Provider>
 	</React.StrictMode>

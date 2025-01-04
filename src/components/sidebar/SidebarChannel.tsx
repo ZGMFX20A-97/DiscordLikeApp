@@ -6,8 +6,9 @@ import { setChannelInfo } from '../../features/channelSlice.ts'
 
 const SidebarChannel = (props: Props) => {
 
-  const {id,channel} = props;
+  const { id,channel } = props;
   const dispatch = useAppDispatch();
+  
   return (
     <div className="sidebarChannel" onClick={() => dispatch(setChannelInfo({
       channelId: id,

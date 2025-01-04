@@ -1,7 +1,7 @@
 import {DocumentData} from "firebase/firestore"
 
-
-export interface InitialUserState{
+//型定義ファイル
+export interface InitialUserState {
     user: null | {
         uid: string;
         photo: string;
@@ -11,13 +11,13 @@ export interface InitialUserState{
 
 }
 
-export interface InitialChannelState{
+export interface InitialChannelState {
     channelId: string | null;
     channelName: string | null;
 
 }
 
-export interface Channel {
+export interface Channels {
     id:string;
     channel: DocumentData;
   }

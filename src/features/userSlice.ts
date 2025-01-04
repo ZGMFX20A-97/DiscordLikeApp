@@ -2,19 +2,22 @@ import { createSlice } from "@reduxjs/toolkit";
 import { InitialUserState } from "../Type";
 
 
+
 const initialState: InitialUserState = {
-    user: null,
+   user: null
 };
 
-
+//ユーザーの状態を管理するスライスを設定する
 export const userSlice = createSlice({
     name: "user",
     initialState,
     reducers: {
+        //現在のユーザー情報をdispatchされた情報に置き換える
         login: (state,action) => {
             state.user = action.payload;
         },
-        logout: (state) => {
+        //ログアウトのアクションクリエーター
+        logout: state => {
             state.user = null;
         },
     },

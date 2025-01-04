@@ -1,65 +1,53 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import "./Chat.scss"
 import ChatHeader from "./ChatHeader.tsx"
 import {AddCircleOutline, CardGiftcard, EmojiEmotions, Gif } from '@mui/icons-material'
 import ChatMessage from "./ChatMessage.tsx"
 import { useAppSelector } from '../../app/hooks.ts'
 import {db} from "../../firebase.ts"
-import { query,addDoc, collection, CollectionReference, DocumentData,DocumentReference,onSnapshot,serverTimestamp,Timestamp, orderBy } from 'firebase/firestore'
-import { InitialUserState } from '../../Type.ts'
-
-interface Messages{
-    timestamp: Timestamp;
-    message: string;
-    user: InitialUserState;
-}
+import { addDoc, collection, CollectionReference, DocumentData,serverTimestamp } from 'firebase/firestore'
+import useSubCollection from '../../hooks/useSubCollection.tsx'
 
 
 
 const Chat = () => {
+  //入力欄に入力されたメッセージを格納する状態変数
   const [inputText,setInputText] = useState<string>("");
-  const [messages,setMessages] = useState<any[]>([]);
-  const {channelName} = useAppSelector((state) => state.channel);
-  const channelId = useAppSelector((state) => state.channel.channelId);
-  const {user} = useAppSelector((state) => state.user)
 
-  useEffect(() =>{
+  //チャンネルネームをstoreから取得する
+  const { channelName } = useAppSelector( state => state.channel);
 
-    let collectionRef = collection(db,"channels",String(channelId),"messages");
-    const collectionRefOrderBy = query(collectionRef,orderBy("timestamp","desc"));
+  //チャンネルIDをstoreから取得する
+  const { channelId } = useAppSelector( state => state.channel);
+  
+  //ログインユーザー(メッセージを発信するユーザー)情報をstoreから取得する
+  const { user } = useAppSelector((state) => state.user)
 
-    onSnapshot(collectionRefOrderBy,(snapshot) => {
-      let results: Messages[]= [];
-      snapshot.docs.forEach((doc) => {
-        results.push({
-          timestamp: doc.data().timestamp,
-          message: doc.data().message,
-          user: doc.data().user,
-        });
-      });
-      setMessages(results);
-    });
-  },[channelId])
+  //カスタムフックでチャンネル内のメッセージ内容を取り出す
+  const { subDocuments: messages } = useSubCollection("channels","messages");
 
-
-
+  //メッセージを送信するための関数
   const sendMessage =async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) =>{
-    e.preventDefault();
+      //サブミット後の自動リロードを阻止する
+      e.preventDefault();
+
+      //親コレクションであるchannelsの中にある、messagesサブコレクションの中のメッセージドキュメントに情報を入れる
       const collectionRef: CollectionReference<DocumentData> = collection(db,"channels",String(channelId),"messages");
 
       await addDoc(collectionRef,{
         message: inputText,
         timestamp: serverTimestamp(),
         user: user,
-
-
       });
+      //submitした後入力欄を空白にリセットする
       setInputText("");
   }
+
   return (
     <div className="chat">
     <ChatHeader channelName={channelName}/>
     <div className="chatMessage">
+      {/* チャット内容を展開する */}
     {messages.map((message,index) =>(
       <ChatMessage key = {index} 
                   message={message.message} 
@@ -71,19 +59,23 @@ const Chat = () => {
         <div className="chatInput">
         <AddCircleOutline />
         <form>
-            <input type="text" placeholder="Udemyへ送信する" 
+            <input type="text" placeholder={`${channelName}へ送信する`}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInputText(e.target.value)}
                   value={inputText}>    
             </input>
+
             <button type="submit" className="chatInputButton" 
                     onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => sendMessage(e)}>
             </button>
+
         </form>
+
         <div className="chatInputIcons">
             <CardGiftcard />
             <Gif />
             <EmojiEmotions />
         </div>
+
         </div>
         
         </div>

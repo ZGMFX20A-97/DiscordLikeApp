@@ -8,8 +8,8 @@ import { signInWithPopup } from 'firebase/auth'
 
 const Login = () => {
 
-const signIn = () =>{
-  signInWithPopup(auth,provider).catch((err) => alert(err.message));
+const logIn = () => {
+  signInWithPopup( auth,provider ).catch( err => alert(err.message));
 }
 
   return (
@@ -17,7 +17,7 @@ const signIn = () =>{
         <div className="loginLogo">
             <img src="./discordIcon.png" alt="/"/>
         </div>
-        <Button onClick={signIn}>ログイン</Button>
+        <Button onClick={logIn}>ログイン</Button>
        </div>
   )
 }

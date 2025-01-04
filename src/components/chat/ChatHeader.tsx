@@ -17,10 +17,12 @@ const ChatHeader = (props: Props) => {
           {props.channelName}
         </h3>
       </div>
+      
       <div className="chatHeaderRight">
         <Notifications />
         <PushPin />
         <PeopleAlt />
+
         <div className="chatHeaderSearch">
           <input type="text" placeholder="検索"></input>
           <Search />

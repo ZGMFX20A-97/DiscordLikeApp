@@ -12,12 +12,20 @@ import { addDoc, collection } from 'firebase/firestore';
 
 
 const Sidebar = () => {
-  const {user}= useAppSelector(state =>state.user);
-  const {documents: channels} = useCollection("channels")
 
+  //今のユーザー状態を取得する
+  const { user }= useAppSelector(state => state.user);
+
+  //カスタムフックのuseCollectionを使用してチャンネルのDBデータを取得すr
+  const { documents: channels } = useCollection("channels")
+  
+  //チャンネルを追加くす関数
   const addChannel = async () =>{
-      let channelName: string|null = prompt("新しいチャンネルを作成します");
 
+      //打ち込んだチャンネル名をchannelName変数に格納する
+      let channelName: string | null = prompt("新しいチャンネルを作成します");
+
+      //入力がある場合チャンネル名をFireStoreのChannelsコレクションに追加する
       if(channelName){
         await addDoc(collection(db,"channels"),{
           channelName: channelName,
@@ -26,14 +34,11 @@ const Sidebar = () => {
 
   }
 
-
-
   return (
     <div className="sidebar">
       <div className="sidebarLeft">
         <div className="serverIcon">
-          <img src="./discordIcon.png" alt="/" />
-          
+          <img src="./discordIcon.png" alt="/" />        
         </div>
       </div>
 
@@ -49,32 +54,44 @@ const Sidebar = () => {
             <ExpandMoreIcon />
             <h4>プログラミングチャンネル</h4>
             </div>
+            {/* ＋アイコンを押せばチャンネルが追加できる */}
             <AddIcon className="sidebarAddIcon" onClick={addChannel}/>
           </div>
+
           <div className="sidebarChannelList">
             {
-              channels.map((channel) => (
+              channels.map( channel => (
               <SidebarChannel channel = {channel} 
                               id = {channel.id} 
                               key = {channel.id}/>)
               )
             }
           </div>
+
           <div className="sidebarFooter">
+            
             <div className="sidebarAccount">
+              {/* アイコンをクリックしたらログアウトができる */}
               <img src={user?.photo} alt="/" onClick={() => auth.signOut()}/>
+
               <div className="accountName">
                 <h4>{user?.displayName}</h4>
+                {/* UID長くてレイアウトが崩れるため前８位を切り取って表示する */}
                 <span>#{user?.uid.substring(0,8)}</span>
               </div>
+
             </div>
+
             <div className="sidebarVoice">
             <MicIcon />
             <Headphones />
             <Settings />
             </div>
+         
           </div>
+        
         </div>
+      
       </div>
 
       </div>
