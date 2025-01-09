@@ -21,7 +21,7 @@ const Chat = () => {
   const { channelId } = useAppSelector( state => state.channel);
   
   //ログインユーザー(メッセージを発信するユーザー)情報をstoreから取得する
-  const { user } = useAppSelector((state) => state.user)
+  const { user } = useAppSelector( state => state.user)
 
   //カスタムフックでチャンネル内のメッセージ内容を取り出す
   const { subDocuments: messages } = useSubCollection("channels","messages");
@@ -59,7 +59,7 @@ const Chat = () => {
         <div className="chatInput">
         <AddCircleOutline />
         <form>
-            <input type="text" placeholder={`${channelName}へ送信する`}
+            <input type="text" placeholder={`${channelName}チャンネルへ送信する`}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInputText(e.target.value)}
                   value={inputText}>    
             </input>

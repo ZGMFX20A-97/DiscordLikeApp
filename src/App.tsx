@@ -6,19 +6,20 @@ import Sidebar from "./components/sidebar/Sidebar.tsx";
 import Login from "./components/Login/Login.tsx";
 import { useAppDispatch, useAppSelector } from "./app/hooks.ts";
 import { useEffect } from "react";
-import { auth } from "./firebase.ts";
+import { auth} from "./firebase.ts";
+import { onAuthStateChanged} from "firebase/auth";
 import { login, logout } from "./features/userSlice.ts";
 
 function App() {
 
 	//Reduxストアの状態を取得する
-	const user = useAppSelector( state => state.user );
+	const { user } = useAppSelector( state => state.user );
 
 	const dispatch = useAppDispatch();
 
 	useEffect(() => {
 		//onAuthStateChanged：認証状態の変化で発火する関数
-		auth.onAuthStateChanged( loginUser => {
+		onAuthStateChanged( auth,loginUser => {
 			//もしログインユーザーが存在すれば、ユーザーの情報(payload)をセットする
 			if (loginUser) {
 				dispatch(

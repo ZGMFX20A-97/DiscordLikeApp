@@ -30,7 +30,7 @@ const useSubCollection = (collectionName: string,subCollectionName: string) => {
         //送信時間の新しい順に取得したデータを並び直す
         const collectionRefOrderBy = query(collectionRef,orderBy("timestamp","desc"));
     
-        onSnapshot(collectionRefOrderBy,snapshot => {
+      onSnapshot(collectionRefOrderBy,snapshot => {
           let results: Messages[]= [];
           snapshot.docs.forEach(doc => {
             results.push({

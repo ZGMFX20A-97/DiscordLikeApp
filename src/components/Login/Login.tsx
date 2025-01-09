@@ -4,12 +4,10 @@ import { Button } from '@mui/material'
 import { auth,provider } from '../../firebase.ts'
 import { signInWithPopup } from 'firebase/auth'
 
-
-
 const Login = () => {
 
-const logIn = () => {
-  signInWithPopup( auth,provider ).catch( err => alert(err.message));
+const logIn = async () => {
+  await signInWithPopup( auth,provider ).catch( err => alert(err.message));
 }
 
   return (

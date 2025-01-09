@@ -9,6 +9,7 @@ import { useAppSelector } from '../../app/hooks.ts';
 import {db,auth} from '../../firebase.ts';
 import useCollection from '../../hooks/useCollection.tsx';
 import { addDoc, collection } from 'firebase/firestore';
+import { signOut } from 'firebase/auth';
 
 
 const Sidebar = () => {
@@ -72,7 +73,7 @@ const Sidebar = () => {
             
             <div className="sidebarAccount">
               {/* アイコンをクリックしたらログアウトができる */}
-              <img src={user?.photo} alt="/" onClick={() => auth.signOut()}/>
+              <img src={user?.photo} alt="ユーザーのアイコン" onClick={() => signOut(auth)}/>
 
               <div className="accountName">
                 <h4>{user?.displayName}</h4>
